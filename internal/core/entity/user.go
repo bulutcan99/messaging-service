@@ -1,17 +1,27 @@
 package entity
 
-type User struct {
-	ID     string `json:"id"`
-	Name   string `json:"name"`
-	Status Status `json:"status,omitempty"`
-	RoomID string `json:"room_id,omitempty"`
-}
+import (
+	"time"
 
-func NewUser(id, name string) *User {
-	return &User{
-		ID:     id,
-		Name:   name,
-		Status: Idle,
-		RoomID: "",
-	}
+	"github.com/google/uuid"
+)
+
+type StudentRole string
+
+type User struct {
+	ID                    uuid.UUID   `json:"id"`
+	BoardID               string      `json:"boardID"`
+	Username              string      `json:"username"`
+	Email                 string      `json:"email"`
+	IsEmailVerified       bool        `json:"isEmailVerified"`
+	SchoolEmail           string      `json:"schoolEmail"`
+	IsSchoolEmailVerified bool        `json:"isSchoolEmailVerified"`
+	PhoneNumber           string      `json:"phoneNumber"`
+	IsPhoneNumberVerified bool        `json:"isPhoneNumberVerified"`
+	Password              string      `json:"password"`
+	Avatar                string      `json:"avatar,omitempty"`
+	Role                  StudentRole `json:"role"`
+	CreatedAt             time.Time   `json:"createdAt"`
+	UpdatedAt             time.Time   `json:"updatedAt"`
+	DeletedAt             *time.Time  `json:"deletedAt,omitempty"`
 }

@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"os/signal"
-	"websocket-azure/presentation/http"
+	"websocket-azure/internal/presentation/http"
 	"websocket-azure/shared/logger"
 	"websocket-azure/shared/setting"
 
@@ -22,7 +22,6 @@ func main() {
 	log := logger.CreateLogger(1)
 	defer log.Sync()
 	zap.ReplaceGlobals(log)
-
 	server := http.NewServer(ctx)
 	if err := server.Start(ctx); err != nil {
 		panic("Server starting error!")
