@@ -4,42 +4,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/rs/cors"
-	"gitlab.otovinn.com/websocket-server/internal/adapter/driving/presentation/http/controller/auth"
-	"gitlab.otovinn.com/websocket-server/internal/adapter/driving/presentation/http/controller/chat"
-	"gitlab.otovinn.com/websocket-server/internal/adapter/driving/presentation/http/middleware"
 	"net/http"
 	"time"
 
+	"github.com/rs/cors"
+
 	"github.com/gorilla/mux"
 
-	"gitlab.otovinn.com/websocket-server/shared/config"
 	"go.uber.org/zap"
 )
 
 type Server struct {
-	ctx               context.Context
-	cfg               *config.Container
-	app               *mux.Router
-	middlewareHandler *middleware.Handler
-	authHandler       *auth.Handler
-	chatHandler       *chat.Handler
+	ctx context.Context
+	app *mux.Router
 }
 
 func NewServer(
 	ctx context.Context,
-	cfg *config.Container,
-	middlewareHandler *middleware.Handler,
-	authHandler *auth.Handler,
-	chatHandler *chat.Handler,
-
 ) *Server {
 	return &Server{
-		ctx:               ctx,
-		cfg:               cfg,
-		middlewareHandler: middlewareHandler,
-		authHandler:       authHandler,
-		chatHandler:       chatHandler,
+		ctx: ctx,
 	}
 }
 
@@ -54,13 +38,13 @@ func (s *Server) Start(ctx context.Context) error {
 		AllowCredentials: true,
 	})
 
-	serverConnURL := fmt.Sprintf("%s:%d", s.cfg.HTTP.Host, s.cfg.HTTP.Port)
+	serverConnURL := fmt.Sprintf("%s:%d", "localhost", 3000)
 
 	srv := &http.Server{
 		Addr:         serverConnURL,
 		Handler:      c.Handler(s.app),
-		ReadTimeout:  time.Minute * time.Duration(s.cfg.Settings.ServerReadTimeout),
-		WriteTimeout: time.Minute * time.Duration(s.cfg.Settings.ServerReadTimeout),
+		ReadTimeout:  time.Minute * time.Duration(5),
+		WriteTimeout: time.Minute * time.Duration(5),
 		IdleTimeout:  time.Minute * 2,
 	}
 
